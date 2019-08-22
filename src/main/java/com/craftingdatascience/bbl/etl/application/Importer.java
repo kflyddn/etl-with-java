@@ -1,5 +1,6 @@
 package com.craftingdatascience.bbl.etl.application;
 
+import com.craftingdatascience.bbl.etl.domain.CachePublisher;
 import com.craftingdatascience.bbl.etl.domain.FileReader;
 import com.craftingdatascience.bbl.etl.domain.converter.ProductConverter;
 import com.craftingdatascience.bbl.etl.domain.mongo.MongoProduct;
@@ -24,15 +25,18 @@ public class Importer implements Runnable {
     private final FileReader<SourceProduct> sourceProductFileReader;
     private final FileReader<SourceComposition> sourceCompositionFileReader;
     private final ProductConverter ProductConverter;
+    private final CachePublisher cachePublisher;
 
     public Importer(
             FileReader<SourceProduct> sourceProductFileReader,
             FileReader<SourceComposition> sourceCompositionFileReader,
-            ProductConverter ProductConverter
+            ProductConverter ProductConverter,
+            CachePublisher cachePublisher
     ) {
         this.sourceProductFileReader = sourceProductFileReader;
         this.sourceCompositionFileReader = sourceCompositionFileReader;
         this.ProductConverter = ProductConverter;
+        this.cachePublisher = cachePublisher;
     }
 
     public void run() {
@@ -46,8 +50,8 @@ public class Importer implements Runnable {
 
             System.out.println("Parsing and converting product models...");
             sourceProductFileReader.read(productsInputStream)
-                    .map(product -> convert(compositionsByProductCode, product))
-                    .forEach(System.out::println);
+                    .map(Product -> convert(compositionsByProductCode, Product))
+                    .forEach(cachePublisher::send);
         } catch (IOException e) {
             System.out.println("Something went wrong here...");
         }
