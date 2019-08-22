@@ -12,18 +12,18 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class ImporterRunnerTest {
 
-  @Mock
-  private Importer importer;
+    @Mock
+    private Importer importer;
 
-  @Test
-  void ImporterRunner_should_run_importer() {
-    // Given
-    ImporterRunner importerRunner = new ImporterRunner(importer);
+    @Test
+    void ImporterRunner_should_run_importer() {
+        // Given
+        ImporterRunner importerRunner = new ImporterRunner(importer);
 
-    // When
-    importerRunner.run(mock(ApplicationArguments.class));
+        // When
+        importerRunner.run(mock(ApplicationArguments.class));
 
-    // Then
-    verify(importer).run();
-  }
+        // Then
+        verify(importer).run();
+    }
 }

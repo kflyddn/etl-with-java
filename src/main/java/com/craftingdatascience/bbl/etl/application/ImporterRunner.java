@@ -6,15 +6,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ImporterRunner implements ApplicationRunner {
-  private final Runnable importer;
+    private final Runnable importer;
 
-  public ImporterRunner(
-    Importer importer
-  ) {
-    this.importer = importer;
-  }
+    public ImporterRunner(
+            Importer importer
+    ) {
+        this.importer = importer;
+    }
 
-  public void run(ApplicationArguments args) {
-    importer.run();
-  }
+    public void run(ApplicationArguments args) {
+        importer.run();
+    }
 }
